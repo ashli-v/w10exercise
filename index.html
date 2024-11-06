@@ -7,10 +7,10 @@
     <style>
         body {
             font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #ffcc00;
+            background-color: #004d4d;
             margin: 0;
             padding: 0;
-            color: #333;
+            color: #ffffff;
         }
         .container {
             max-width: 1000px;
@@ -19,6 +19,7 @@
             background-color: #ffffff;
             border: 5px solid #ff6600;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+            color: #333;
         }
         h1 {
             text-align: center;
@@ -37,16 +38,32 @@
             margin-right: 10px;
             font-weight: bold;
         }
-        #chart-container {
+        #ratings-table-container {
             margin-top: 30px;
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 2px solid #ff6600;
+        }
+        th, td {
+            padding: 10px;
             text-align: center;
         }
         #recommendations {
             margin-top: 30px;
             padding: 20px;
-            background-color: #ffeb99;
+            background-color: #d8bfd8;
             border-radius: 10px;
-            border: 2px solid #ff6600;
+            border: 2px solid #ff66b2;
+        }
+        #recommendation-list .cartoon {
+            background-color: #ffccff;
+            border: 2px solid #ff66b2;
         }
         button {
             background-color: #ff6600;
@@ -70,7 +87,6 @@
             border: 1px solid #ccc;
         }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
@@ -78,8 +94,18 @@
         <div id="cartoon-list"></div>
         <button onclick="submitRatings()">Submit Ratings</button>
         <button onclick="loadMoreCartoons()">Rate 10 More Cartoons</button>
-        <div id="chart-container">
-            <canvas id="genreChart" width="400" height="200"></canvas>
+        <div id="ratings-table-container">
+            <h2>Ratings Summary</h2>
+            <table id="ratings-table">
+                <thead>
+                    <tr>
+                        <th>Rating</th>
+                        <th>Cartoons</th>
+                    </tr>
+                </thead>
+                <tbody id="ratings-table-body">
+                </tbody>
+            </table>
         </div>
         <div id="recommendations">
             <h2>Recommended Cartoons</h2>
@@ -96,6 +122,7 @@
         let topGenres = [];
         let recommendations = [];
         let allCartoons = [];
+        let ratingsSummary = {};
 
         async function loadCartoons() {
             try {
@@ -138,7 +165,6 @@
         }
 
         function submitRatings() {
-            const ratings = [];
             const forms = document.querySelectorAll('form');
 
             forms.forEach((form, index) => {
@@ -148,13 +174,10 @@
                 const cartoonGenres = form.previousElementSibling.textContent.match(/Genre: (.*)/)[1].split(', ');
                 const cartoonNetwork = form.previousElementSibling.textContent.match(/Network: (.*) \|/)[1];
 
-                ratings.push({
-                    cartoonIndex: index,
-                    rating: rating,
-                    genres: cartoonGenres,
-                    network: cartoonNetwork,
-                    title: cartoonTitle
-                });
+                if (!ratingsSummary[rating]) {
+                    ratingsSummary[rating] = [];
+                }
+                ratingsSummary[rating].push(cartoonTitle);
 
                 if (rating >= 3) {
                     cartoonGenres.forEach(genre => {
@@ -166,11 +189,11 @@
                 ratedCartoons.push(cartoonTitle);
             });
 
-            console.log('Ratings:', ratings);
+            console.log('Ratings Summary:', ratingsSummary);
             console.log('Genre Preferences:', genrePreferences);
             console.log('Network Ratings:', networkRatings);
             alert('Ratings submitted. Check the console for details.');
-            displayChart();
+            displayRatingsTable();
             generateRecommendations();
         }
 
@@ -178,34 +201,21 @@
             displayCartoons(selectRandomCartoons(allCartoons, 10));
         }
 
-        function displayChart() {
-            const ctx = document.getElementById('genreChart').getContext('2d');
-            const labels = Object.keys(genrePreferences);
-            const data = Object.values(genrePreferences);
+        function displayRatingsTable() {
+            const ratingsTableBody = document.getElementById('ratings-table-body');
+            ratingsTableBody.innerHTML = '';
 
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Number of Shows Rated 3 or Higher',
-                        data: data,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        x: {
-                            beginAtZero: true
-                        },
-                        y: {
-                            beginAtZero: true
-                        }
-                    }
-                }
+            Object.keys(ratingsSummary).forEach(rating => {
+                const row = document.createElement('tr');
+                const ratingCell = document.createElement('td');
+                const cartoonsCell = document.createElement('td');
+
+                ratingCell.textContent = rating;
+                cartoonsCell.textContent = ratingsSummary[rating].join(', ');
+
+                row.appendChild(ratingCell);
+                row.appendChild(cartoonsCell);
+                ratingsTableBody.appendChild(row);
             });
         }
 
