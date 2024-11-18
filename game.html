@@ -23,6 +23,7 @@
 <body>
     <script>
         let backgroundImage;
+        let currentZone = ""; // Variable to store the name of the current zone
 
         function preload() {
             // Load the uploaded background image
@@ -41,43 +42,71 @@
             // Draw the background image
             image(backgroundImage, 0, 0, width, height);
 
-            // Display current coordinates
+            // Display current coordinates at the mouse position
             displayCoordinates();
 
-            // Add mouseover highlights for each interactive zone (for testing purposes)
+            // Add mouseover highlights for each interactive zone
             drawMouseoverZones();
+
+            // Display the name of the current zone at the center of the page
+            displayZoneName();
         }
 
         function displayCoordinates() {
-            // Display current mouseX and mouseY in the bottom-left corner
-            fill(0); // Black text
-            textSize(16);
+            // Display current mouseX and mouseY at the mouse position
+            fill(255); // Black text
+            textSize(20);
             textAlign(LEFT, BOTTOM);
-            text(`MouseX: ${mouseX}, MouseY: ${mouseY}`, 10, height - 10); // Display at bottom-left corner
+            text(`(${mouseX}, ${mouseY})`, mouseX + 15, mouseY - 10); // Display near the cursor
         }
 
         function drawMouseoverZones() {
-            // Example zones for testing purposes
-            if (mouseX > 600 && mouseX < 900 && mouseY > 200 && mouseY < 400) {
-                highlightZone(600, 200, 300, 200, "Mountain Zone");
-            }
+            // Check mouse position for each zone and set currentZone if applicable
 
-            if (mouseX > 300 && mouseX < 700 && mouseY > 700 && mouseY < 900) {
-                highlightZone(300, 700, 400, 200, "Stream Zone");
+            // Mountain (top-right area)
+            if (mouseX > 600 && mouseX < 900 && mouseY > 200 && mouseY < 400) {
+                currentZone = "Mountain";
+                highlightZone(600, 200, 300, 200);
+            } 
+            // Stream (center-bottom)
+            else if (mouseX > 300 && mouseX < 700 && mouseY > 700 && mouseY < 900) {
+                currentZone = "Stream";
+                highlightZone(300, 700, 400, 200);
+            } 
+            // Deer (right-middle area)
+            else if (mouseX > 750 && mouseX < 850 && mouseY > 600 && mouseY < 750) {
+                currentZone = "Deer";
+                highlightZone(750, 600, 100, 150);
+            } 
+            // Pink Flowers (bottom-left corner)
+            else if (mouseX > 100 && mouseX < 300 && mouseY > 800 && mouseY < 900) {
+                currentZone = "Pink Flowers";
+                highlightZone(100, 800, 200, 100);
+            } 
+            // Large Rock (middle-left)
+            else if (mouseX > 200 && mouseX < 300 && mouseY > 500 && mouseY < 600) {
+                currentZone = "Large Rock";
+                highlightZone(200, 500, 100, 100);
+            } else {
+                currentZone = ""; // Reset if not in any zone
             }
         }
 
-        function highlightZone(x, y, w, h, textMessage) {
+        function highlightZone(x, y, w, h) {
             // Highlight the zone
             fill(255, 255, 0, 100); // Yellow transparent overlay
             noStroke();
             rect(x, y, w, h);
+        }
 
-            // Display the message
-            fill(0);
-            textSize(24);
-            textAlign(CENTER, CENTER);
-            text(textMessage, width / 2, 50); // Message displayed at the top
+        function displayZoneName() {
+            if (currentZone !== "") {
+                // Display the name of the zone in large letters at the center
+                fill(0);
+                textSize(48);
+                textAlign(CENTER, CENTER);
+                text(currentZone, width / 2, height / 2);
+            }
         }
     </script>
 </body>
