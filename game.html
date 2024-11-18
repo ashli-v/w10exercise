@@ -25,8 +25,8 @@
         let backgroundImage;
 
         function preload() {
-            // Load the background image
-            backgroundImage = loadImage('outdoorgame.jpeg');
+            // Load the uploaded background image
+            backgroundImage = loadImage('outdoorgame.jpeg'); // Ensure this file is in the same folder
         }
 
         function setup() {
@@ -35,19 +35,49 @@
         }
 
         function draw() {
-            // Draw the background image
-            background(backgroundImage);
+            // Draw the light blue background
+            background(173, 216, 230);
 
-            // Add a starting message
-            fill(255, 255, 255, 200); // White text with slight transparency
-            textSize(32);
-            textAlign(CENTER, CENTER);
-            text("Mystery Game: Click to Begin!", width / 2, height / 2);
+            // Draw the background image
+            image(backgroundImage, 0, 0, width, height);
+
+            // Display current coordinates
+            displayCoordinates();
+
+            // Add mouseover highlights for each interactive zone (for testing purposes)
+            drawMouseoverZones();
         }
 
-        function mousePressed() {
-            // Handle clicks for game interaction
-            console.log("Canvas clicked! Prepare for the adventure...");
+        function displayCoordinates() {
+            // Display current mouseX and mouseY in the bottom-left corner
+            fill(0); // Black text
+            textSize(16);
+            textAlign(LEFT, BOTTOM);
+            text(`MouseX: ${mouseX}, MouseY: ${mouseY}`, 10, height - 10); // Display at bottom-left corner
+        }
+
+        function drawMouseoverZones() {
+            // Example zones for testing purposes
+            if (mouseX > 600 && mouseX < 900 && mouseY > 200 && mouseY < 400) {
+                highlightZone(600, 200, 300, 200, "Mountain Zone");
+            }
+
+            if (mouseX > 300 && mouseX < 700 && mouseY > 700 && mouseY < 900) {
+                highlightZone(300, 700, 400, 200, "Stream Zone");
+            }
+        }
+
+        function highlightZone(x, y, w, h, textMessage) {
+            // Highlight the zone
+            fill(255, 255, 0, 100); // Yellow transparent overlay
+            noStroke();
+            rect(x, y, w, h);
+
+            // Display the message
+            fill(0);
+            textSize(24);
+            textAlign(CENTER, CENTER);
+            text(textMessage, width / 2, 50); // Message displayed at the top
         }
     </script>
 </body>
