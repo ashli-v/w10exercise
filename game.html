@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #aed9f4;
+            background-color: #f0f0f0;
         }
 
         #defaultCanvas0 {
@@ -42,7 +42,7 @@
 
         function draw() {
             // Check if the adventure is over
-            if (interactedZones.size === totalZones) {
+            if (score === totalZones) {
                 displayEndMessage();
                 return;
             }
@@ -173,7 +173,7 @@
         }
 
         function mousePressed() {
-            if (interactedZones.size === totalZones) return;
+            if (score === totalZones) return;
 
             if (showChoice) {
                 // Handle clicks on Yes/No choices
