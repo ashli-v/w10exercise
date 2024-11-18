@@ -58,7 +58,7 @@
             displayZoneName();
 
             // Display the message for the clicked zone
-            displayZoneMessage();
+            if (!showChoice) displayZoneMessage();
 
             // Show Yes/No choices if applicable
             if (showChoice) {
@@ -82,10 +82,10 @@
                 currentZone = "Mountain";
                 highlightZone(600, 200, 300, 200);
             } 
-            // Stream (center-bottom)
-            else if (mouseX > 300 && mouseX < 700 && mouseY > 700 && mouseY < 900) {
+            // Stream (adjusted coordinates)
+            else if (mouseX > 424 && mouseX < 770 && mouseY > 762 && mouseY < 860) {
                 currentZone = "Stream";
-                highlightZone(300, 700, 400, 200);
+                highlightZone(424, 762, 346, 98);
             } 
             // Deer (right-middle area)
             else if (mouseX > 750 && mouseX < 850 && mouseY > 600 && mouseY < 750) {
@@ -167,8 +167,9 @@
                     // Clicked No
                     console.log("Clicked No");
                 }
-                // Hide choices after a decision
+                // Hide choices and message after a decision
                 showChoice = false;
+                zoneMessage = ""; // Clear the zone-specific message
             } else if (currentZone !== "") {
                 // Display zone-specific message
                 if (currentZone === "Mountain") {
