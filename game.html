@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #91e9f2;
+            background-color: #aed9f4;
         }
 
         #defaultCanvas0 {
@@ -41,6 +41,12 @@
         }
 
         function draw() {
+            // Check if the adventure is over
+            if (interactedZones.size === totalZones) {
+                displayEndMessage();
+                return;
+            }
+
             // Draw the light blue background
             background(173, 216, 230);
 
@@ -49,12 +55,6 @@
 
             // Display the score in the top-left corner
             displayScore();
-
-            // Check if the adventure is over
-            if (interactedZones.size === totalZones) {
-                displayEndMessage();
-                return;
-            }
 
             // Display current coordinates at the mouse position
             displayCoordinates();
@@ -66,7 +66,7 @@
             displayZoneName();
 
             // Display the message for the clicked zone
-            if (!showChoice) displayZoneMessage();
+            displayZoneMessage();
 
             // Show Yes/No choices if applicable
             if (showChoice) {
@@ -173,6 +173,8 @@
         }
 
         function mousePressed() {
+            if (interactedZones.size === totalZones) return;
+
             if (showChoice) {
                 // Handle clicks on Yes/No choices
                 if (mouseX > width / 2 - 70 && mouseX < width / 2 - 30 && mouseY > height / 2 + 180 && mouseY < height / 2 + 220) {
@@ -183,9 +185,8 @@
                     // Clicked No
                     console.log("Clicked No");
                 }
-                // Hide choices after a decision
-                showChoice = false;
-                zoneMessage = ""; // Clear the zone-specific message
+                showChoice = false; // Hide choices after selection
+                interactedZones.add(currentZone); // Add the zone to the set of interacted zones
             } else if (currentZone !== "") {
                 // Display zone-specific message
                 if (currentZone === "Mountain") {
@@ -200,19 +201,7 @@
                     zoneMessage = "Sit down";
                 }
                 showChoice = true; // Show Yes/No options
-                interactedZones.add(currentZone); // Add the zone to the set of interacted zones
             }
-        }
-
-        function restartGame() {
-            // Reset game state
-            score = 0;
-            interactedZones.clear();
-            showChoice = false;
-            zoneMessage = "";
-            currentZone = "";
-            document.getElementById("restartButton").style.display = "none"; // Hide the restart button
-            loop();
         }
     </script>
 </body>
