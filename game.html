@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        #defaultCanvas0 {
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        let backgroundImage;
+
+        function preload() {
+            // Load the background image
+            backgroundImage = loadImage('outdoorgame.jpeg');
+        }
+
+        function setup() {
+            // Create the canvas
+            createCanvas(1000, 1000);
+        }
+
+        function draw() {
+            // Draw the background image
+            background(backgroundImage);
+
+            // Add a starting message
+            fill(255, 255, 255, 200); // White text with slight transparency
+            textSize(32);
+            textAlign(CENTER, CENTER);
+            text("Mystery Game: Click to Begin!", width / 2, height / 2);
+        }
+
+        function mousePressed() {
+            // Handle clicks for game interaction
+            console.log("Canvas clicked! Prepare for the adventure...");
+        }
+    </script>
+</body>
+</html>
