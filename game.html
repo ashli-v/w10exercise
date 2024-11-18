@@ -12,19 +12,19 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #87c6ed;
+            background-color: #abc8fb;
         }
 
         #defaultCanvas0 {
             border: 2px solid #333;
         }
 
-        button {
+        #restartButton {
             display: none;
             position: absolute;
-            top: 20px;
+            top: 60%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translate(-50%, -50%);
             padding: 10px 20px;
             font-size: 18px;
             background-color: #007BFF;
@@ -34,7 +34,7 @@
             cursor: pointer;
         }
 
-        button:hover {
+        #restartButton:hover {
             background-color: #0056b3;
         }
     </style>
@@ -187,7 +187,7 @@
         function displayEndMessage() {
             // Display "Adventure Over" in large letters at the center
             fill(0);
-            textSize(48);
+            textSize(60);
             textAlign(CENTER, CENTER);
             text("Adventure Over", width / 2, height / 2);
         }
@@ -205,7 +205,7 @@
                     // Clicked No
                     console.log("Clicked No");
                 }
-                // Hide choices and message after a decision
+                // Hide choices after a decision
                 showChoice = false;
                 interactedZones.add(currentZone); // Add the zone to the set of interacted zones
             } else if (currentZone !== "") {
