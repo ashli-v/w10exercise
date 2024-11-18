@@ -27,6 +27,8 @@
         let zoneMessage = ""; // Variable to store the message for the clicked zone
         let showChoice = false; // Flag to display Yes/No choices
         let score = 0; // Player's score
+        let interactedZones = new Set(); // Set to track interacted zones
+        const totalZones = 5; // Total number of interactive zones
 
         function preload() {
             // Load the uploaded background image
@@ -47,6 +49,12 @@
 
             // Display the score in the top-left corner
             displayScore();
+
+            // Check if the adventure is over
+            if (interactedZones.size === totalZones) {
+                displayEndMessage();
+                return;
+            }
 
             // Display current coordinates at the mouse position
             displayCoordinates();
@@ -156,6 +164,14 @@
             text(`Score: ${score}`, 10, 10);
         }
 
+        function displayEndMessage() {
+            // Display "Adventure Over" in large letters at the center
+            fill(0);
+            textSize(48);
+            textAlign(CENTER, CENTER);
+            text("Adventure Over", width / 2, height / 2);
+        }
+
         function mousePressed() {
             if (showChoice) {
                 // Handle clicks on Yes/No choices
@@ -169,7 +185,6 @@
                 }
                 // Hide choices and message after a decision
                 showChoice = false;
-                zoneMessage = ""; // Clear the zone-specific message
             } else if (currentZone !== "") {
                 // Display zone-specific message
                 if (currentZone === "Mountain") {
@@ -184,6 +199,7 @@
                     zoneMessage = "Sit down";
                 }
                 showChoice = true; // Show Yes/No options
+                interactedZones.add(currentZone); // Add the zone to the set of interacted zones
             }
         }
     </script>
