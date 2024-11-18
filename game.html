@@ -25,6 +25,8 @@
         let backgroundImage;
         let currentZone = ""; // Variable to store the name of the current zone
         let zoneMessage = ""; // Variable to store the message for the clicked zone
+        let showChoice = false; // Flag to display Yes/No choices
+        let score = 0; // Player's score
 
         function preload() {
             // Load the uploaded background image
@@ -43,6 +45,9 @@
             // Draw the background image
             image(backgroundImage, 0, 0, width, height);
 
+            // Display the score in the top-left corner
+            displayScore();
+
             // Display current coordinates at the mouse position
             displayCoordinates();
 
@@ -54,6 +59,11 @@
 
             // Display the message for the clicked zone
             displayZoneMessage();
+
+            // Show Yes/No choices if applicable
+            if (showChoice) {
+                displayChoices();
+            }
         }
 
         function displayCoordinates() {
@@ -115,28 +125,64 @@
 
         function displayZoneMessage() {
             if (zoneMessage !== "") {
-                // Display the message for the clicked zone in bold letters at the center
-                fill(0, 102, 153); // Dark blue text
+                // Display a white highlight
+                fill(255); // White text background
+                textSize(32);
+                textAlign(CENTER, CENTER);
+                text(zoneMessage, width / 2 + 3, height / 2 + 103); // Offset slightly for highlight
+
+                // Display black foreground text
+                fill(0); // Black text
                 textSize(32);
                 textAlign(CENTER, CENTER);
                 text(zoneMessage, width / 2, height / 2 + 100);
             }
         }
 
+        function displayChoices() {
+            // Display Yes/No options on the canvas
+            fill(0);
+            textSize(28);
+            textAlign(CENTER, CENTER);
+            text("Yes", width / 2 - 50, height / 2 + 200);
+            text("No", width / 2 + 50, height / 2 + 200);
+        }
+
+        function displayScore() {
+            // Display the score in the top-left corner
+            fill(0);
+            textSize(24);
+            textAlign(LEFT, TOP);
+            text(`Score: ${score}`, 10, 10);
+        }
+
         function mousePressed() {
-            // Handle mouse clicks in interactive zones
-            if (currentZone === "Mountain") {
-                zoneMessage = "Climb the mountain";
-            } else if (currentZone === "Stream") {
-                zoneMessage = "Cross the stream";
-            } else if (currentZone === "Deer") {
-                zoneMessage = "Follow the deer";
-            } else if (currentZone === "Pink Flowers") {
-                zoneMessage = "Pick a flower";
-            } else if (currentZone === "Large Rock") {
-                zoneMessage = "Sit down";
-            } else {
-                zoneMessage = ""; // Reset if clicking outside zones
+            if (showChoice) {
+                // Handle clicks on Yes/No choices
+                if (mouseX > width / 2 - 70 && mouseX < width / 2 - 30 && mouseY > height / 2 + 180 && mouseY < height / 2 + 220) {
+                    // Clicked Yes
+                    score += 1; // Add 1 point
+                    console.log("Clicked Yes");
+                } else if (mouseX > width / 2 + 30 && mouseX < width / 2 + 70 && mouseY > height / 2 + 180 && mouseY < height / 2 + 220) {
+                    // Clicked No
+                    console.log("Clicked No");
+                }
+                // Hide choices after a decision
+                showChoice = false;
+            } else if (currentZone !== "") {
+                // Display zone-specific message
+                if (currentZone === "Mountain") {
+                    zoneMessage = "Climb the mountain";
+                } else if (currentZone === "Stream") {
+                    zoneMessage = "Cross the stream";
+                } else if (currentZone === "Deer") {
+                    zoneMessage = "Follow the deer";
+                } else if (currentZone === "Pink Flowers") {
+                    zoneMessage = "Pick a flower";
+                } else if (currentZone === "Large Rock") {
+                    zoneMessage = "Sit down";
+                }
+                showChoice = true; // Show Yes/No options
             }
         }
     </script>
