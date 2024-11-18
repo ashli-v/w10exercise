@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #87c6ed;
         }
 
         #defaultCanvas0 {
@@ -49,7 +49,6 @@
         let score = 0; // Player's score
         let interactedZones = new Set(); // Set to track interacted zones
         const totalZones = 5; // Total number of interactive zones
-        let gameOver = false; // Flag to indicate if the game is over
 
         function preload() {
             // Load the uploaded background image
@@ -62,7 +61,7 @@
         }
 
         function draw() {
-            if (gameOver) {
+            if (interactedZones.size === totalZones) {
                 displayEndMessage();
                 document.getElementById("restartButton").style.display = "block";
                 return;
@@ -188,13 +187,13 @@
         function displayEndMessage() {
             // Display "Adventure Over" in large letters at the center
             fill(0);
-            textSize(60);
+            textSize(48);
             textAlign(CENTER, CENTER);
             text("Adventure Over", width / 2, height / 2);
         }
 
         function mousePressed() {
-            if (gameOver) return;
+            if (interactedZones.size === totalZones) return;
 
             if (showChoice) {
                 // Handle clicks on Yes/No choices
@@ -208,12 +207,7 @@
                 }
                 // Hide choices and message after a decision
                 showChoice = false;
-                zoneMessage = ""; // Clear the zone-specific message
                 interactedZones.add(currentZone); // Add the zone to the set of interacted zones
-                // Check if the game is over
-                if (interactedZones.size === totalZones) {
-                    gameOver = true;
-                }
             } else if (currentZone !== "") {
                 // Display zone-specific message
                 if (currentZone === "Mountain") {
@@ -235,7 +229,6 @@
             // Reset game state
             score = 0;
             interactedZones.clear();
-            gameOver = false;
             showChoice = false;
             zoneMessage = "";
             currentZone = "";
@@ -243,4 +236,5 @@
             loop();
         }
     </script>
-</body
+</body>
+</html>
