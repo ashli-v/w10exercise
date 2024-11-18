@@ -12,7 +12,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            background-color: #022f41;
         }
 
         #defaultCanvas0 {
@@ -165,8 +165,14 @@
         }
 
         function displayEndMessage() {
-            // Display "Adventure Over" in large letters at the center
-            fill(0);
+            // Highlight box for "Adventure Over"
+            fill(135, 206, 250); // Sky blue
+            rectMode(CENTER);
+            noStroke();
+            rect(width / 2, height / 2, 400, 100, 10); // Rounded rectangle
+
+            // Display "Adventure Over" text
+            fill(0); // Black text
             textSize(48);
             textAlign(CENTER, CENTER);
             text("Adventure Over", width / 2, height / 2);
