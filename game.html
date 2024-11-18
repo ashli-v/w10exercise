@@ -12,35 +12,15 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #abc8fb;
+            background-color: #91e9f2;
         }
 
         #defaultCanvas0 {
             border: 2px solid #333;
         }
-
-        #restartButton {
-            display: none;
-            position: absolute;
-            top: 60%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            padding: 10px 20px;
-            font-size: 18px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-
-        #restartButton:hover {
-            background-color: #0056b3;
-        }
     </style>
 </head>
 <body>
-    <button id="restartButton" onclick="restartGame()">Restart</button>
     <script>
         let backgroundImage;
         let currentZone = ""; // Variable to store the name of the current zone
@@ -61,12 +41,6 @@
         }
 
         function draw() {
-            if (interactedZones.size === totalZones) {
-                displayEndMessage();
-                document.getElementById("restartButton").style.display = "block";
-                return;
-            }
-
             // Draw the light blue background
             background(173, 216, 230);
 
@@ -75,6 +49,12 @@
 
             // Display the score in the top-left corner
             displayScore();
+
+            // Check if the adventure is over
+            if (interactedZones.size === totalZones) {
+                displayEndMessage();
+                return;
+            }
 
             // Display current coordinates at the mouse position
             displayCoordinates();
@@ -187,14 +167,12 @@
         function displayEndMessage() {
             // Display "Adventure Over" in large letters at the center
             fill(0);
-            textSize(60);
+            textSize(48);
             textAlign(CENTER, CENTER);
             text("Adventure Over", width / 2, height / 2);
         }
 
         function mousePressed() {
-            if (interactedZones.size === totalZones) return;
-
             if (showChoice) {
                 // Handle clicks on Yes/No choices
                 if (mouseX > width / 2 - 70 && mouseX < width / 2 - 30 && mouseY > height / 2 + 180 && mouseY < height / 2 + 220) {
@@ -207,7 +185,7 @@
                 }
                 // Hide choices after a decision
                 showChoice = false;
-                interactedZones.add(currentZone); // Add the zone to the set of interacted zones
+                zoneMessage = ""; // Clear the zone-specific message
             } else if (currentZone !== "") {
                 // Display zone-specific message
                 if (currentZone === "Mountain") {
@@ -222,6 +200,7 @@
                     zoneMessage = "Sit down";
                 }
                 showChoice = true; // Show Yes/No options
+                interactedZones.add(currentZone); // Add the zone to the set of interacted zones
             }
         }
 
