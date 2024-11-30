@@ -150,7 +150,7 @@
 
                 cartoonDiv.innerHTML = `
                     <h3>${cartoon.title} (${cartoon.year_created})</h3>
-                    <p>Network: ${cartoon.network} | Genre: ${cartoon.genre.join(', ')}</p>
+                    <p>Network: ${cartoon?.network || 'N/A'} | Genre: ${cartoon?.genre?.join(', ') || 'N/A'}</p>
                     <form>
                         <label><input type="radio" name="rating-${index}" value="1"> 1</label>
                         <label><input type="radio" name="rating-${index}" value="2"> 2</label>
